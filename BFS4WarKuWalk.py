@@ -2,6 +2,7 @@
 @Author - ReiiYuki
 '''
 import random
+import queue
 
 def randomMapCreate(size,obstacle) :
     list = []
@@ -22,5 +23,35 @@ def printMap(map) :
             print (j,end = " ")
         print()
 
+def BFS(map,x,y,targetX,targetY) :
+    s = []
+    q = queue.Queue()
+    s.append((x,y))
+    q.put((x,y))
+    reach = False
+    while q.qsize() > 0 or not reach:
+        current = q.get()
+        x = current[0]
+        y = current[1]
+        print (x,y)
+        if current[0] == targetX and current[1] == targetY :
+            reach = True
+            s.append((x,y))
+        else :
+            if (x+1,y) not in s and x+1<len(map) and map[x+1][y] != 1 :
+                s.append((x+1,y))
+                q.put((x+1,y))
+            if (x-1,y) not in s and x-1>=0 and map[x-1][y] != 1:
+                s.append((x-1,y))
+                q.put((x-1,y))
+            if (x,y+1) not in s and y+1<len(map) and map[x][y+1] != 1:
+                s.append((x,y+1))
+                q.put((x,y+1))
+            if (x,y-1) not in s and y-1>=0 and map[x][y-1] != 1:
+                s.append((x,y-1))
+                q.put((x,y-1))
+    return s
+
 map = randomMapCreate(16,50)
 printMap(map)
+print (BFS(map,0,0,15,15))
