@@ -60,8 +60,14 @@ def BFS(map,x,y,targetX,targetY) :
     while current in history :
         current = history[current]
         path.append(current)
-    return path
+    return path[::-1]
 
+def showWalk(map,path) :
+    for i in path :
+        map[i[0]][i[1]] = '*'
+        printMap(map)
+        print ()
 map = randomMapCreate(16,50)
 printMap(map)
-print (BFS(map,0,0,15,15))
+path = BFS(map,0,8,15,15)
+showWalk(map,path)
