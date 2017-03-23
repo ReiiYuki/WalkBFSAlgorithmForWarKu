@@ -24,6 +24,7 @@ def printMap(map) :
         print()
 
 def BFS(map,x,y,targetX,targetY) :
+    history = dict()
     s = []
     q = queue.Queue()
     s.append((x,y))
@@ -33,7 +34,6 @@ def BFS(map,x,y,targetX,targetY) :
         current = q.get()
         x = current[0]
         y = current[1]
-        print (x,y)
         if current[0] == targetX and current[1] == targetY :
             reach = True
             s.append((x,y))
@@ -41,16 +41,26 @@ def BFS(map,x,y,targetX,targetY) :
             if (x+1,y) not in s and x+1<len(map) and map[x+1][y] != 1 :
                 s.append((x+1,y))
                 q.put((x+1,y))
+                history[(x+1,y)] = current
             if (x-1,y) not in s and x-1>=0 and map[x-1][y] != 1:
                 s.append((x-1,y))
                 q.put((x-1,y))
+                history[(x-1,y)] = current
             if (x,y+1) not in s and y+1<len(map) and map[x][y+1] != 1:
                 s.append((x,y+1))
                 q.put((x,y+1))
+                history[(x,y+1)] = current
             if (x,y-1) not in s and y-1>=0 and map[x][y-1] != 1:
                 s.append((x,y-1))
                 q.put((x,y-1))
-    return s
+                history[(x,y-1)] = current
+    path = []
+    path.append((targetX,targetY))
+    current = (targetX,targetY)
+    while current in history :
+        current = history[current]
+        path.append(current)
+    return path
 
 map = randomMapCreate(16,50)
 printMap(map)
